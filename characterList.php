@@ -20,10 +20,10 @@ if (!$characters)
         
     </head>
     <body>
-        <form method="POST">         
+        <form method="POST" action="main.php">        
             <label for="Names">Name:</label>
 
-            <select name="Names" id="names">
+            <select name="names" id="names">
             <?php foreach($characters as $character){
                 echo '<option value="' . $character['id'] . '">' . $character['name'] . '</option>';
             }

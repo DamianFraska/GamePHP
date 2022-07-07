@@ -1,20 +1,24 @@
 <?php
 
-include 'helper/functions.php';
+include 'helpers/functions.php';
 
 session_start();
 
 $database = new Database();
-$character = $database->getCharacter($_SESSION['userId'], $_POST['names']);
+if(isset($_POST['names'])){
+    $_SESSION['characterId'] = $_POST['names'];
+}
+// $_SESSION['characterId'] = $_POST['names'] ?? $_SESSION['characterId'];
+$character = $database->getCharacter($_SESSION['userId'], $_SESSION['characterId']);
+$name = 'Test';
+
+$score = $character['point'];
+$life = $character['hp'];
 
 
 
 
 
-
-
-$score = file_get_contents('score.txt');
-$life = file_get_contents('life.txt');
 $opponentLife = file_get_contents('opponentLife.txt');
 
 
@@ -33,14 +37,18 @@ if ($playerMove) {
     $playerMove = array_keys($playerMove);
     $playerMove = array_pop($playerMove);
     $result = rockPaperScissor($playerMove, $opponentMoveRand);
-    $battleMSG = countScoreLife($result);
+    $character = countScoreLife($result, $character);   
 }
 
-$score = file_get_contents('score.txt');
-$life = file_get_contents('life.txt');
+
+
+$database->updateCharacter($character);
+$score = $character['point'];
+$life = $character['hp'];
+
 $opponentLife = file_get_contents('opponentLife.txt');
 
-if ($life === '0') {
+if ($life === 0) {
     header('Location: ' . '/gameover.php');
 }
 if ($opponentLife === '0') {
@@ -78,7 +86,6 @@ if ($opponentLife === '0') {
 
 <body>
     <form method="POST">
-        <input type="hidden" value="<?php echo $name ?>" name="name">
         <button type="submit" name="playerMove[rock]">Rock</button>
         <button type="submit" name="playerMove[paper]">Paper</button>
         <button type="submit" name="playerMove[scissors]">Scissors</button>

@@ -12,7 +12,7 @@ class Database
         $this->connection = new PDO($dsn, $user, $password);
     }
 
-    public function registerUser($login, $password)
+    public function registerUser($login, $password): void
     {
         $sql = 'INSERT INTO users (login, password) VALUES (:login, :password);';
         $statement = $this->connection->prepare($sql);
@@ -50,12 +50,26 @@ class Database
         return $statement->fetchAll();
     }
     
-    public function getCharacter(int $characterId): ?array
+    public function getCharacter(int $userId, int $characterId): ?array
     {
-        $sql = 'SELECT * FROM characters WHERE id = :characterId';
+        $sql = 'SELECT * FROM characters WHERE id = :characterId AND user_id = :userId';
         $statement = $this->connection->prepare($sql);
-        $statement->execute(['characterId' => $characterId]);
+        $statement->execute(['characterId' => $characterId, 'userId' => $userId]);
         return $statement->fetchAll()[0] ?? null;
+    }
+
+    public function updateCharacter(array $character): int
+    {
+        $sql = 'UPDATE characters SET name =  :name, point = :point , hp = :hp WHERE id = :id';
+        $statement = $this->connection->prepare($sql);
+        $statement->execute([
+            'name' => $character['name'], 
+            'point' => $character['point'], 
+            'hp' => $character['hp'], 
+            'id' => $character['id']
+        ]);
+        
+        return $statement->rowCount();
     }
 
 }

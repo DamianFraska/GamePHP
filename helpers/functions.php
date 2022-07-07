@@ -2,6 +2,7 @@
 
 include "classes.php";
 
+
 function rockPaperScissor($playerMove, $opponentMoveRand){
     switch ($playerMove) {
         case "rock":
@@ -40,21 +41,15 @@ function rockPaperScissor($playerMove, $opponentMoveRand){
     }
 }
 
-function countScoreLife($result){
-    if($result === 1){
-        $tempScore = file_get_contents('score.txt');
-        file_put_contents('score.txt', $tempScore + 100);
-        $tempOpponentLife = file_get_contents('opponentLife.txt');
-        file_put_contents('opponentLife.txt', $tempOpponentLife - 1);
+function countScoreLife(int $result, array $character) :array
+{
+    if ($result === 1) {
+        $character['point'] = ++$character['point'];
     }
-    if($result === -1){
-        $tempLife = file_get_contents('life.txt');
-        file_put_contents('life.txt', $tempLife - 1);
+    if ($result === -1) {
+        $character['hp'] = --$character['hp'];
     }
-    if($result === 0){
-        $tempScore = file_get_contents('score.txt');
-        file_put_contents('score.txt', $tempScore + 10);
-    }
+    return $character;
 }
 
 function battleLog($result){
@@ -72,12 +67,6 @@ function battleLog($result){
 
 function loginUser(string $login, string $password): array
 {
-
-    $testArray = [
-        'login' => 'jakis tam login',
-        'password' => 'jakis tam password'
-    ];
-
     //TODO: connect to db
     $database = new Database();   
 
