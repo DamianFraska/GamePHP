@@ -1,5 +1,7 @@
 <?php
 
+include "classes.php";
+
 function rockPaperScissor($playerMove, $opponentMoveRand){
     switch ($playerMove) {
         case "rock":
@@ -67,4 +69,32 @@ function battleLog($result){
     }
 
 }
+
+function loginUser(string $login, string $password): array
+{
+
+    $testArray = [
+        'login' => 'jakis tam login',
+        'password' => 'jakis tam password'
+    ];
+
+    //TODO: connect to db
+    $database = new Database();   
+
+    //TODO: get user from db
+    $userData = $database->getUser($login);
+    if(!$userData) {
+        //TODO: set and display error to user 
+        header('Location: ' . '/index.php');
+    }
+    
+    //TODO: check the password
+    if($password !== $userData['password']){
+        header('Location: ' . '/index.php');
+    }
+    
+    //TODO: return user data
+    return $userData;
+}
+
 ?>

@@ -1,8 +1,16 @@
 <?php
 
-include 'function.php';
+include 'helper/functions.php';
 
 session_start();
+
+$database = new Database();
+$character = $database->getCharacter($_SESSION['userId'], $_POST['names']);
+
+
+
+
+
 
 
 $score = file_get_contents('score.txt');
@@ -10,8 +18,8 @@ $life = file_get_contents('life.txt');
 $opponentLife = file_get_contents('opponentLife.txt');
 
 
-$name = $_SESSION['name'] ?? $_POST['name'] ?? 'Unknown player';
-$_SESSION['name'] = $name;
+// $name = $_SESSION['name'] ?? $_POST['name'] ?? 'Unknown player';
+// $_SESSION['name'] = $name;
 
 $playerMove = $_POST['playerMove'] ?? [];
 $opponentMove = array("Paper", "Scissors", "Rock");
