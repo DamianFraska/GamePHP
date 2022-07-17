@@ -6,9 +6,11 @@ $database = new Database();
 $password = $_POST["password"];
 $password2 = $_POST["password2"];
 if($password !== $password2){
-    header('Location: ' . '/rejestracja.html');
+    header('Location: ' . 'rejestracja.html');
+    exit;
 }
-$database->registerUser($_POST["login"], $password);    
+$hashPasword = password_hash($password, PASSWORD_DEFAULT);
+$database->registerUser($_POST["login"], $hashPasword);    
 //TODO:: verify do insert;
-header('Location: ' . '/createCharacter.php');
+header('Location: ' . 'index.php');
 ?>

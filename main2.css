@@ -1,0 +1,27 @@
+body {
+    background-image: url("darkforest.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    color: whitesmoke;
+  }
+.ramka {
+    border: solid;
+    border-radius: 10px;
+    border-color: whitesmoke(29, 29, 29);
+    padding: 10px;
+    color: whitesmoke;
+}
+.text-left {
+    text-align: left;
+  }
+.text-center {
+    text-align: center;
+  }
+.vs {
+    font-size: 50px;
+}
+.fontpx30 {
+    font-size: 30px;
+}

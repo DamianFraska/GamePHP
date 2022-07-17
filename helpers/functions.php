@@ -41,48 +41,47 @@ function rockPaperScissor($playerMove, $opponentMoveRand){
     }
 }
 
-function countScoreLife(int $result, array $character) :array
+function countScoreLife(int $result, array $character, array $currentOpponenData) :array
 {
     if ($result === 1) {
-        $character['point'] = ++$character['point'];
+        $character['point'] = $character['point'] + (2 * $character['current_opponent_id']+1);
+        $character['current_opponent_hp'] = $character['current_opponent_hp'] - $character['atk'];
     }
     if ($result === -1) {
-        $character['hp'] = --$character['hp'];
+        $character['hp'] = $character['hp'] - $currentOpponenData['opponent_atk'];
+    }
+    if ($result === 0) {
+        $character['point'] = $character['point'] + (1 * $character['current_opponent_id']+1);
     }
     return $character;
 }
 
-function battleLog($result){
+function battleLog($result, $character, $currentOpponenData){
     if($result === 1){
-        return "Win, You gain 100 Points";
+        return "Win, You gain " . (2 * ($character['current_opponent_id']+1)) . " " . "Points";
     }
     if($result === -1){
-        return "Lose, life dropped by 1";
+        return "Lose, life dropped by " . $currentOpponenData['opponent_atk'] ;
     }
     if($result === 0){
-        return "Draw, You gain 10 points";
+        return "Draw, You gain " . (1 * ($character['current_opponent_id']+1))  . " " . "Points";
     }
 
 }
 
 function loginUser(string $login, string $password): array
 {
-    //TODO: connect to db
     $database = new Database();   
 
-    //TODO: get user from db
     $userData = $database->getUser($login);
     if(!$userData) {
-        //TODO: set and display error to user 
         header('Location: ' . '/index.php');
     }
     
-    //TODO: check the password
     if($password !== $userData['password']){
         header('Location: ' . '/index.php');
     }
     
-    //TODO: return user data
     return $userData;
 }
 

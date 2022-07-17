@@ -60,16 +60,35 @@ class Database
 
     public function updateCharacter(array $character): int
     {
-        $sql = 'UPDATE characters SET name =  :name, point = :point , hp = :hp WHERE id = :id';
+        $sql = 'UPDATE characters SET name =  :name, point = :point , hp = :hp, atk = :atk, current_opponent_id = :current_opponent_id, current_opponent_hp = :current_opponent_hp WHERE id = :id';
         $statement = $this->connection->prepare($sql);
         $statement->execute([
             'name' => $character['name'], 
             'point' => $character['point'], 
             'hp' => $character['hp'], 
+            'atk' => $character['atk'],
+            'current_opponent_id' => $character['current_opponent_id'],
+            'current_opponent_hp' => $character['current_opponent_hp'],
             'id' => $character['id']
+
         ]);
         
         return $statement->rowCount();
+    }
+
+    public function getOponents(): array
+    {
+        $sql = 'SELECT * FROM opponents';
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll() ?? null;
+    }
+
+    public function createCharacter($user_id, $name)
+    {
+        $sql = 'INSERT INTO characters (user_id, name) VALUES (:user_id, :name);';
+        $statement = $this->connection->prepare($sql);
+        $statement->execute(['user_id' => $user_id, 'name' => $name]);
     }
 
 }
